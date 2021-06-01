@@ -19,9 +19,10 @@ def innerCircle(img):
     kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (10, 10))
     img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
 
-    circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT, 2, 50,
+    circles = cv2.HoughCircles(img, cv2.HOUGH_GRADIENT, 2, 5,
                                param1=110, param2=20, minRadius=10, maxRadius=130)
     circles = np.uint16(np.around(circles))
+    circles[0, :, 2] += 3
 
     # distance = np.zeros(len(circles[0]))
     # for index, value in enumerate(circles[0, :]):
