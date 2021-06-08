@@ -5,13 +5,13 @@ from skimage.transform import hough_circle, hough_circle_peaks
 
 def outerCircle(img, inner):
     clip_img = img[(inner[1] - inner[2]): (inner[1] + inner[2]), :]
-    clip_img = cv2.medianBlur(clip_img, 11)
-    # img = cv2.medianBlur(img, 11)
-    # img = cv2.medianBlur(img, 11)
-    eye_edges = cv2.Canny(clip_img, threshold1=15, threshold2=30, L2gradient=True)
-    circles = cv2.HoughCircles(eye_edges, cv2.HOUGH_GRADIENT, 2, 5,
-                               param1=30, param2=20, minRadius=int(inner[2] * 1.8), maxRadius=int(inner[2] * 2.5))
-    circles = np.uint16(np.around(circles))
+    clip_img = cv2.equalizeHist(clip_img)
+    clip_img = cv2.GaussianBlur(clip_img, (9, 9), 0)
+    clip_img = cv2.medianBlur(clip_img, 9)
+
+    circles = cv2.HoughCircles(clip_img, cv2.HOUGH_GRADIENT, 2, 5,
+                               param1=30, param2=20, minRadius=int(inner[2] * 1.4), maxRadius=int(inner[2] * 3))
+    circles = np.int16(np.around(circles))
     circles[0, :, 1] += inner[1] - inner[2]
 
     distance = np.zeros(len(circles[0]))
