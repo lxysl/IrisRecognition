@@ -3,10 +3,11 @@ import cv2
 
 
 def innerCircle(img):
-    '''
+    """
+    内圆检测
     :param img: cv2.imread() numpy.ndarrdy
-    :return: 瞳孔霍夫圆 numpy.ndarray [x, y, r]
-    '''
+    :return: 瞳孔霍夫圆参数 numpy.ndarray [x, y, r]
+    """
 
     img = cv2.medianBlur(img, 11)
     ret, img = cv2.threshold(img, 50, 255, cv2.THRESH_BINARY)

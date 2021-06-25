@@ -15,8 +15,9 @@ width = 512
 
 def generateFeatureDataset(feature_dataset_path=fdp, dataset_path=dp, mode='swt'):
     """
+    生成特征数据库，目录格式与数据集目录相对应
     :param feature_dataset_path: 特征目录
-    :param dataset_path: 数据集目录 '.\\dataset\\name\\L\\1.jpeg'
+    :param dataset_path: 数据集目录 './dataset/name/L/1.jpeg'
     :param mode: 特征提取模式
     """
     i = 0
@@ -33,6 +34,7 @@ def generateFeatureDataset(feature_dataset_path=fdp, dataset_path=dp, mode='swt'
 
 
 def getFeatureMap(img, mode='swt'):
+    # 提取每张照片的特征
     inner = innerCircle(img)
     outer = outerCircle(img, inner)
     polar_array, polar_noise = normalize(img, outer[0], outer[1], outer[2], inner[0], inner[1], inner[2], height, width)
@@ -44,6 +46,7 @@ def getFeatureMap(img, mode='swt'):
 
 
 def swtFeatureMap(normalized_img, wavelet='db3', level=7):
+    # 提取规范化后（矩形区域）的图片特征
     swt_list = np.zeros((normalized_img.shape[0], level + 1, normalized_img.shape[1]), dtype=np.uint8)  # (40, 8, 512)
     for index, value in enumerate(normalized_img):
         # cA7, cD7, cD6, cD5, cD4, cD3, cD2, cD1
@@ -53,12 +56,13 @@ def swtFeatureMap(normalized_img, wavelet='db3', level=7):
             coeff[coeff < 0] = 0
         swt_list[index] = np.array(swt_coeffs)
     swt_list = swt_list.swapaxes(0, 1)  # (8, 40, 512)
-    feature = swt_list.reshape((-1, 512))
-    # feature = swt_list[4:5].reshape((-1, 512))
+    feature = swt_list.reshape((-1, 512))  # (320, 512)
+    # feature = swt_list[1:5].reshape((-1, 512))
     return feature
 
 
 def mallatFeatureMap(normalized_img, wavelet='db3', level=7):
+    """效果不好弃用"""
     coeff_list = np.zeros((normalized_img.shape[0], level + 1, normalized_img.shape[1]))
     for index, value in enumerate(normalized_img):
         # cA7, cD7, cD6, cD5, cD4, cD3, cD2, cD1

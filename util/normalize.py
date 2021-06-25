@@ -1,12 +1,6 @@
-##-----------------------------------------------------------------------------
-##  Import
-##-----------------------------------------------------------------------------
 import numpy as np
 
 
-##-----------------------------------------------------------------------------
-##  Function
-##-----------------------------------------------------------------------------
 def normalize(image, x_iris, y_iris, r_iris, x_pupil, y_pupil, r_pupil,
               radpixels, angulardiv):
     """
@@ -127,7 +121,6 @@ def normalize(image, x_iris, y_iris, r_iris, x_pupil, y_pupil, r_pupil,
     return polar_array, polar_noise.astype(bool)
 
 
-# ------------------------------------------------------------------------------
 def circlecoords(c, r, imgsize, nsides=600):
     """
     Description:

@@ -16,7 +16,7 @@ def contrast(test_img, mode='swt', feature_dataset_path=fdp):
                 img_feature = cv2.imread(os.path.join(path, img_path), -1)
                 distance = np.count_nonzero(test_img_feature != img_feature)
                 score_per_eye += distance
-            path_split = path.split('\\')
+            path_split = path.split('\\')  # windows下为'\\'，linux下为'/'
             score_dict[path_split[-2] + '-' + path_split[-1]] = score_per_eye / len(file_list)
             score_per_eye = 0
 

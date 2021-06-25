@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>签到系统</title>
+    <script type="text/javascript" src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"
+            integrity="sha384-cPwlPLvBTa3sKAgddT6krw0cJat7egBga3DJepJyrLl4Q9/5WLra3rrnMcyTyOnh"
+            crossorigin="anonymous"></script>
+    <script>
+        $SCRIPT_ROOT = {{ request.script_root|tojson }};
+        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+        socket.on('connect', function () {
+            socket.emit('subscribe', {topic: 'mqtt'});
+            console.log('sub');
+        });
+        socket.on('mqtt_message', function (msg) {
+            console.log(msg);
+            document.getElementById('name').innerText += msg.payload;
+            document.getElementById('name').innerText += '\n';
+        })
+    </script>
+</head>
+<body>
+<div>签到名单：</div>
+<button onclick="document.getElementById('name').innerText = ''">清空</button>
+<div id="name"></div>
+</body>
+</html>
